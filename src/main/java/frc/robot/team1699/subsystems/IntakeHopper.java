@@ -2,10 +2,8 @@ package frc.robot.team1699.subsystems;
 
 import com.ctre.phoenix.motorcontrol.TalonSRXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
-import frc.robot.team1699.Constants;
 import frc.robot.team1699.Constants.IntakeHopperConstants;
 
 public class IntakeHopper {
@@ -16,8 +14,8 @@ public class IntakeHopper {
     private IntakeHopperState wantedState = IntakeHopperState.STORED;
 
     public IntakeHopper() {
-        motor = new TalonSRX(Constants.kIntakeHopperID);
-        solenoid = new DoubleSolenoid(Constants.kIntakeSolenoidModulePort, PneumaticsModuleType.CTREPCM, Constants.kIntakeSolenoidForwardPort, Constants.kIntakeSolenoidReversePort);
+        motor = new TalonSRX(IntakeHopperConstants.kIntakeHopperID);
+        solenoid = new DoubleSolenoid(IntakeHopperConstants.kIntakeSolenoidModulePort, PneumaticsModuleType.CTREPCM, IntakeHopperConstants.kIntakeSolenoidForwardPort, IntakeHopperConstants.kIntakeSolenoidReversePort);
         solenoid.set(DoubleSolenoid.Value.kReverse);
     }
 
@@ -64,13 +62,13 @@ public class IntakeHopper {
     public void update() {
         switch(currentState) {
             case INTAKING:
-                setMotor(IntakeHopperConstants.intakePercent);
+                setMotor(IntakeHopperConstants.kIntakePercent);
                 break;
             case OUTTAKING:
-                setMotor(IntakeHopperConstants.outtakePercent);
+                setMotor(IntakeHopperConstants.kOuttakePercent);
                 break;
             case RUNNING:
-                setMotor(IntakeHopperConstants.intakePercent);
+                setMotor(IntakeHopperConstants.kRunPercent);
                 break;
             case STORED:
                 setMotor(0);

@@ -4,13 +4,12 @@
 
 package frc.robot;
 
-import com.ctre.phoenix.motorcontrol.NeutralMode;
-
+import com.ctre.phoenix6.signals.NeutralModeValue;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
-import frc.robot.team1699.Constants;
+import frc.robot.team1699.Constants.InputConstants;
 import frc.robot.team1699.subsystems.Drivetrain;
 import frc.robot.team1699.subsystems.IntakeHopper;
 import frc.robot.team1699.subsystems.IntakeHopper.IntakeHopperState;
@@ -30,7 +29,7 @@ public class Robot extends TimedRobot {
   private Drivetrain drive = new Drivetrain();
   private IntakeHopper intakeHopper = new IntakeHopper();
   private Compressor compressor = new Compressor(1, PneumaticsModuleType.CTREPCM);
-  private XboxController controller = new XboxController(Constants.kDriverID);
+  private XboxController driverController = new XboxController(InputConstants.kDriverID);
 
   @Override
   public void robotInit() {
@@ -48,15 +47,16 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
-    drive.setIdleMode(NeutralMode.Brake);
+    drive.setIdleMode(NeutralModeValue.Brake);
   }
 
   @Override
   public void teleopPeriodic() {
-    drive.runArcadeDrive(controller.getLeftY(), -controller.getRightX());
-    if(controller.getRightTriggerAxis() > 0) {
+    drive.joystickDrive(driverController.getLeftY(), -driverController.getRightX());
+    
+    if(driverController.getRightTriggerAxis() > 0) {
       intakeHopper.setWantedState(IntakeHopperState.INTAKING);
-    } else if(controller.getLeftTriggerAxis() > 0) {
+    } else if(driverController.getLeftTriggerAxis() > 0) {
       intakeHopper.setWantedState(IntakeHopperState.OUTTAKING);
     } else {
       intakeHopper.setWantedState(IntakeHopperState.STORED);
